@@ -1,0 +1,77 @@
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+}
+
+h2 {
+  margin-bottom: 16px;
+  color: #2c3e50;
+}
+
+h3 {
+  margin-top: 0;
+  color: #34495e;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+#detailsContent {
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+th {
+  background: #f0f3f7;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #e1e6ef;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eef1f6;
+}
+
+tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+tr:hover td {
+  background: #eef4ff;
+}

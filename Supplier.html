@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Supplier Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="supplier.css" />
+</head>
+
+<body>
+  <div class="container">
+
+    <h2>Supplier Panel</h2>
+
+    <!-- Supplier Selector -->
+    <div class="card">
+      <label for="supplierSelect">Select Supplier</label>
+      <select id="supplierSelect">
+        <option value="">-- Choose Supplier --</option>
+      </select>
+    </div>
+
+    <!-- Supplier Details -->
+    <div class="card" id="supplierDetails" style="display:none;">
+      <h3>Supplier Details</h3>
+      <div id="detailsContent"></div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="card" id="itemsCard" style="display:none;">
+      <h3>Items Supplied</h3>
+      <div class="table-wrapper">
+        <table id="itemsTable">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>PLQ</th>
+              <th>PLS</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="supplier.js"></script>
+</body>
+</html>
