@@ -3,20 +3,76 @@
 <head>
   <title>Live Sheet Data</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family: Arial; padding: 10px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ddd; padding: 8px; }
-    th { background: #f4f4f4; }
-    .container { overflow-x: auto; }
-  </style>
+
+<style>
+  body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h3 {
+    margin: 0 0 12px 0;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    max-height: 70vh;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    background: #f0f3f7;
+    color: #34495e;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #e1e6ef;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eef1f6;
+    color: #2c3e50;
+  }
+
+  tr:nth-child(even) td {
+    background: #fafbfc;
+  }
+
+  tr:hover td {
+    background: #eef4ff;
+  }
+</style>
+
+
 </head>
 <body>
-  <h3>Live Data</h3>
-  <div class="container">
-    <table id="table"></table>
+  <div class="card">
+    <h3>Priority & Success Tracker</h3>
+    <div class="table-wrapper">
+      <table id="table"></table>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
