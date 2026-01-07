@@ -1,11 +1,11 @@
-// 🔴 REPLACE WITH YOUR REAL VALUES
+const SPREADSHEET_ID = "1DQb28aLuAK1uSgZnMR2GdW2Cq2QHRfP08A0QVX-VV6U";
 const SUPPLIER_GID = "678738705";
 const ITEM_GID = "1062614252";
 
 const SUPPLIER_URL =
-`https://docs.google.com/spreadsheets/d/e/2PACX-1vRUKuo3yzsWt5nrvL0h6fnnX8DjwTyzc9VzTi9VmdanF-DZChVDVrJrtJ55THxWzp78KJcMdURoLGe9/pub?output=csv&gid=${SUPPLIER_GID}`
+`https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${SUPPLIER_GID}`;
 const ITEM_URL =
-`https://docs.google.com/spreadsheets/d/e/2PACX-1vRUKuo3yzsWt5nrvL0h6fnnX8DjwTyzc9VzTi9VmdanF-DZChVDVrJrtJ55THxWzp78KJcMdURoLGe9/pub?output=csv&gid=${ITEM_GID}`
+  `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${ITEM_GID}`;
   
 let supplierMaster = [];
 let itemData = [];
