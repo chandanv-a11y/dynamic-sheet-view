@@ -16,7 +16,26 @@ const STATUS_URL =
 
 // ---------- HELPERS ----------
 function parseCSV(csv) {
-  return csv
+  // 🔑 Fix multiline quoted cells
+  let fixed = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < csv.length; i++) {
+    const char = csv[i];
+
+    if (char === '"') {
+      insideQuotes = !insideQuotes;
+      fixed += char;
+    } else if (char === "\n" && insideQuotes) {
+      // replace newline inside quotes with space
+      fixed += " ";
+    } else {
+      fixed += char;
+    }
+  }
+
+  // Now safe to split rows
+  return fixed
     .trim()
     .split("\n")
     .map(r =>
@@ -24,6 +43,7 @@ function parseCSV(csv) {
         .map(c => c.replace(/(^"|"$)/g, "").trim())
     );
 }
+
 
 function normalize(h) {
   return h
