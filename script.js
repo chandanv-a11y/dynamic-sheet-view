@@ -77,6 +77,9 @@ function initPerformance(csv) {
     renderPerformanceTable(data, yearIndexes, yearSelect.value)
   );
 
+  console.log(yearIndexes);
+  console.log(headers);
+
   renderPerformanceTable(data, yearIndexes, DEFAULT_YEAR);
 }
 
