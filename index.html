@@ -1,77 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Live Sheet Data</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>Performance, Success & Priority</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
-  body {
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f5f7fa;
-    margin: 0;
-    padding: 20px;
-  }
+  <style>
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
 
-  h3 {
-    margin: 0 0 12px 0;
-    color: #3643BA;
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
+    h3 {
+      margin: 0 0 12px;
+      color: #2c3e50;
+    }
 
-  .card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
 
-  .table-wrapper {
-    overflow-x: auto;
-    max-height: 70vh;
-  }
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 12px;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
-  }
+    .table-wrapper {
+      overflow-x: auto;
+      max-height: 70vh;
+    }
 
-  th {
-    position: sticky;
-    top: 0;
-    background: #ffffff;
-    color: #3643BA;
-    font-weight: 600;
-    text-align: left;
-    padding: 10px;
-    border-bottom: 1px solid #e1e6ef;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
 
-  td {
-    padding: 10px;
-    border-bottom: 1px solid #eef1f6;
-    color: #000000;
-  }
+    th {
+      position: sticky;
+      top: 0;
+      background: #f0f3f7;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
 
-  tr:nth-child(even) td {
-    background: #fafbfc;
-  }
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
 
-  tr:hover td {
-    background: #eef4ff;
-  }
-</style>
+    tr:nth-child(even) td {
+      background: #fafbfc;
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- PERFORMANCE -->
   <div class="card">
-    <h3>Priority & Success</h3>
+    <h3>Project Performance</h3>
+
+    <label>
+      Select Year:
+      <select id="yearSelect"></select>
+    </label>
+
     <div class="table-wrapper">
-      <table id="table"></table>
+      <table id="performanceTable"></table>
+    </div>
+  </div>
+
+  <!-- SUCCESS & PRIORITY -->
+  <div class="card">
+    <h3>Success & Priority</h3>
+
+    <div class="table-wrapper">
+      <table id="statusTable"></table>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
-
 </html>
