@@ -5,7 +5,6 @@ const SPREADSHEET_ID = "1DQb28aLuAK1uSgZnMR2GdW2Cq2QHRfP08A0QVX-VV6U";
 const PERFORMANCE_GID = "275411016";
 const STATUS_GID = SHEET_GID;
 
-// Default year
 const DEFAULT_YEAR = "2025";
 
 // URLs
@@ -16,14 +15,6 @@ const STATUS_URL =
   `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${STATUS_GID}`;
 
 // ---------- HELPERS ----------
-function normalizeHeader(h) {
-  return h
-    .replace(/\n/g, " ")
-    .replace(/\s+/g, " ")
-    .replace(/"/g, "")
-    .trim();
-}
-
 function parseCSV(csv) {
   return csv
     .trim()
@@ -34,16 +25,16 @@ function parseCSV(csv) {
     );
 }
 
-function getColumnIndex(headers, year, type) {
-  return headers.findIndex(h => {
-    const clean = normalizeHeader(h);
-    if (type === "planned") return clean === year;
-    if (type === "realised")
-      return clean.startsWith(year) && clean.toLowerCase().includes("real");
-  });
+function normalize(h) {
+  return h
+    .replace(/\n/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/"/g, "")
+    .toLowerCase()
+    .trim();
 }
 
-// ---------- FETCH BOTH ----------
+// ---------- FETCH ----------
 Promise.all([
   fetch(PERFORMANCE_URL).then(r => r.text()),
   fetch(STATUS_URL).then(r => r.text())
@@ -52,41 +43,52 @@ Promise.all([
   renderFullTable(statusCSV, "statusTable");
 }).catch(err => console.error("Fetch error:", err));
 
-// ---------- PERFORMANCE ----------
+
+// ================= PERFORMANCE =================
+
 function initPerformance(csv) {
   const rows = parseCSV(csv);
-  const headers = rows[0].map(normalizeHeader);
+  const rawHeaders = rows[0];
+  const headers = rawHeaders.map(normalize);
   const data = rows.slice(1);
 
   const yearSelect = document.getElementById("yearSelect");
   yearSelect.innerHTML = "";
 
-  // Detect years (planned columns only)
-  const years = [...new Set(
-    headers.filter(h => /^\d{4}$/.test(h))
-  )];
+  // 🔑 Detect year columns by PURE year value
+  const yearIndexes = [];
 
-  years.forEach(y => {
+  headers.forEach((h, i) => {
+    if (/^\d{4}$/.test(h)) {
+      yearIndexes.push({ year: h, index: i });
+    }
+  });
+
+  // Populate dropdown
+  yearIndexes.forEach(y => {
     const opt = document.createElement("option");
-    opt.value = y;
-    opt.textContent = y;
-    if (y === DEFAULT_YEAR) opt.selected = true;
+    opt.value = y.year;
+    opt.textContent = y.year;
+    if (y.year === DEFAULT_YEAR) opt.selected = true;
     yearSelect.appendChild(opt);
   });
 
   yearSelect.addEventListener("change", () =>
-    renderPerformanceTable(headers, data, yearSelect.value)
+    renderPerformanceTable(data, yearIndexes, yearSelect.value)
   );
 
-  renderPerformanceTable(headers, data, DEFAULT_YEAR);
+  renderPerformanceTable(data, yearIndexes, DEFAULT_YEAR);
 }
 
-function renderPerformanceTable(headers, data, year) {
+function renderPerformanceTable(data, yearIndexes, year) {
   const table = document.getElementById("performanceTable");
   table.innerHTML = "";
 
-  const plannedCol = getColumnIndex(headers, year, "planned");
-  const realisedCol = getColumnIndex(headers, year, "realised");
+  const yearObj = yearIndexes.find(y => y.year === year);
+  if (!yearObj) return;
+
+  const plannedIndex = yearObj.index;
+  const realisedIndex = plannedIndex + 1; // 🔑 CRITICAL FIX
 
   // Header
   const head = document.createElement("tr");
@@ -105,14 +107,15 @@ function renderPerformanceTable(headers, data, year) {
       <td>${r[0] || ""}</td>
       <td>${r[1] || ""}</td>
       <td>${r[2] || ""}</td>
-      <td>${plannedCol !== -1 ? r[plannedCol] : "-"}</td>
-      <td>${realisedCol !== -1 ? r[realisedCol] : "-"}</td>
+      <td>${r[plannedIndex] || "-"}</td>
+      <td>${r[realisedIndex] || "-"}</td>
     `;
     table.appendChild(tr);
   });
 }
 
-// ---------- SUCCESS & PRIORITY ----------
+// ================= SUCCESS / PRIORITY =================
+
 function renderFullTable(csv, tableId) {
   const rows = parseCSV(csv);
   const table = document.getElementById(tableId);
