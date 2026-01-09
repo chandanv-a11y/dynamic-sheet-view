@@ -15,8 +15,9 @@ const STATUS_URL =
   `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${STATUS_GID}`;
 
 // ---------- HELPERS ----------
+
+// Multiline-safe CSV parser
 function parseCSV(csv) {
-  // 🔑 Fix multiline quoted cells
   let fixed = "";
   let insideQuotes = false;
 
@@ -27,14 +28,12 @@ function parseCSV(csv) {
       insideQuotes = !insideQuotes;
       fixed += char;
     } else if (char === "\n" && insideQuotes) {
-      // replace newline inside quotes with space
       fixed += " ";
     } else {
       fixed += char;
     }
   }
 
-  // Now safe to split rows
   return fixed
     .trim()
     .split("\n")
@@ -44,7 +43,6 @@ function parseCSV(csv) {
     );
 }
 
-
 function normalize(h) {
   return h
     .replace(/\n/g, " ")
@@ -52,6 +50,22 @@ function normalize(h) {
     .replace(/"/g, "")
     .toLowerCase()
     .trim();
+}
+
+// Extract numeric value safely
+function extractNumber(value) {
+  if (!value) return null;
+  const match = value.replace(",", ".").match(/-?\d+(\.\d+)?/);
+  return match ? parseFloat(match[0]) : null;
+}
+
+// Decide color class
+function getPerformanceClass(planned, realised) {
+  const p = extractNumber(planned);
+  const r = extractNumber(realised);
+
+  if (p === null || r === null) return "";
+  return r >= p ? "good" : "bad";
 }
 
 // ---------- FETCH ----------
@@ -75,7 +89,7 @@ function initPerformance(csv) {
   const yearSelect = document.getElementById("yearSelect");
   yearSelect.innerHTML = "";
 
-  // 🔑 Detect year columns by PURE year value
+  // Detect year columns
   const yearIndexes = [];
 
   headers.forEach((h, i) => {
@@ -97,12 +111,6 @@ function initPerformance(csv) {
     renderPerformanceTable(data, yearIndexes, yearSelect.value)
   );
 
-  console.log(yearIndexes);
-  console.log(headers);
-  console.log(data);
-  console.log(rawHeaders);
-  console.log(rows);
-
   renderPerformanceTable(data, yearIndexes, DEFAULT_YEAR);
 }
 
@@ -114,7 +122,7 @@ function renderPerformanceTable(data, yearIndexes, year) {
   if (!yearObj) return;
 
   const plannedIndex = yearObj.index;
-  const realisedIndex = plannedIndex + 1; // 🔑 CRITICAL FIX
+  const realisedIndex = plannedIndex + 1;
 
   // Header
   const head = document.createElement("tr");
@@ -128,13 +136,18 @@ function renderPerformanceTable(data, yearIndexes, year) {
 
   // Rows
   data.forEach(r => {
+    const planned = r[plannedIndex] || "-";
+    const realised = r[realisedIndex] || "-";
+
+    const statusClass = getPerformanceClass(planned, realised);
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${r[0] || ""}</td>
       <td>${r[1] || ""}</td>
       <td>${r[2] || ""}</td>
-      <td>${r[plannedIndex] || "-"}</td>
-      <td>${r[realisedIndex] || "-"}</td>
+      <td>${planned}</td>
+      <td class="${statusClass}">${realised}</td>
     `;
     table.appendChild(tr);
   });
