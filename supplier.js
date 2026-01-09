@@ -81,9 +81,9 @@ function renderSupplierItems(name) {
   filtered.forEach(i => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${i.ITEM}</td>
-      <td>${i.PLQ}</td>
-      <td>${i.PLS}</td>
+      <td>${i.PRODUCT_CATALOGUE}</td>
+      <td>${i.PQS}</td>
+      <td>${i.PSS}</td>
     `;
     tbody.appendChild(tr);
   });
