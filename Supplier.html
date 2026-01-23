@@ -20,15 +20,22 @@
       </select>
     </div>
 
-    <!-- Supplier Details -->
-    <div class="card" id="supplierDetails" style="display:none;">
-      <h3>Supplier Details</h3>
-      <div id="detailsContent"></div>
+    <!-- Supplier Header (styled using existing CSS) -->
+    <div class="card supplier-header" id="supplierDetails" style="display:none;">
+      <div class="name">
+        <!-- JS will inject SUPPLIER NAME here -->
+        <span id="detailsContent"></span>
+      </div>
+      <div class="meta">
+        <!-- JS already writes POC / CONTACT / LOCATION into detailsContent,
+             so we let it flow naturally -->
+      </div>
     </div>
 
     <!-- Items Table -->
     <div class="card" id="itemsCard" style="display:none;">
       <h3>Items Supplied</h3>
+
       <div class="table-wrapper">
         <table id="itemsTable">
           <thead>
