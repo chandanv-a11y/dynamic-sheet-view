@@ -23,12 +23,24 @@ const KPI_RULES = {
   "availability": "HIGHER_BETTER",
   "satisfaction": "HIGHER_BETTER",
   "coverage": "HIGHER_BETTER",
+  "Homologation" : "HIGHER_BETTER",
+  "Duplication " :"HIGHER_BETTER",
+  "Traceability " : "HIGHER_BETTER",
+  "mastering rate" : "HIGHER_BETTER",
+  "Sustainable Raw Material" : "HIGHER_BETTER",
+  "0 coal" : "HIGHER_BETTER",
+  "Green TO" : "HIGHER_BETTER",
+  "RE" : "HIGHER_BETTER",
+  "SBTi" : "HIGHER_BETTER",
+  "RA" : "HIGHER_BETTER",
+  "Referentship ": "HIGHER_BETTER",
 
   // Lower is better
   "leadtime": "LOWER_BETTER",
   "opex": "LOWER_BETTER",
   "co2": "LOWER_BETTER",
   "delay": "LOWER_BETTER",
+  "reduction" : " ",
 
   // Grade based
   "hrp": "GRADE",
