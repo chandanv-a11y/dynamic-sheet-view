@@ -16,6 +16,77 @@ const STATUS_URL =
 
 // ---------- HELPERS ----------
 
+
+const KPI_RULES = {
+  // Higher is better
+  "dtb": "HIGHER_BETTER",
+  "availability": "HIGHER_BETTER",
+  "satisfaction": "HIGHER_BETTER",
+  "coverage": "HIGHER_BETTER",
+
+  // Lower is better
+  "leadtime": "LOWER_BETTER",
+  "opex": "LOWER_BETTER",
+  "co2": "LOWER_BETTER",
+  "delay": "LOWER_BETTER",
+
+  // Grade based
+  "hrp": "GRADE",
+  "env": "GRADE",
+  "assessment": "GRADE"
+};
+
+function getKpiRule(kpiName) {
+  const key = kpiName.toLowerCase();
+  for (const k in KPI_RULES) {
+    if (key.includes(k)) return KPI_RULES[k];
+  }
+  return "HIGHER_BETTER"; // safe default
+}
+
+const GRADE_SCORE = {
+  "a": 5,
+  "b": 4,
+  "c": 3,
+  "d": 2,
+  "e": 1
+};
+
+function compareGrades(target, realised) {
+  const t = GRADE_SCORE[target?.toLowerCase()];
+  const r = GRADE_SCORE[realised?.toLowerCase()];
+  if (!t || !r) return null;
+  return r >= t;
+}
+
+function evaluatePerformance(kpi, target, realised) {
+  const rule = getKpiRule(kpi);
+
+  if (!target || !realised) return "";
+
+  // Grade KPIs
+  if (rule === "GRADE") {
+    const ok = compareGrades(target, realised);
+    return ok === null ? "" : ok ? "good" : "bad";
+  }
+
+  // Numeric KPIs
+  const t = extractNumber(target);
+  const r = extractNumber(realised);
+  if (t === null || r === null) return "";
+
+  if (rule === "HIGHER_BETTER") {
+    return r >= t ? "good" : "bad";
+  }
+
+  if (rule === "LOWER_BETTER") {
+    return r <= t ? "good" : "bad";
+  }
+
+  return "";
+}
+
+
 // Multiline-safe CSV parser
 function parseCSV(csv) {
   let fixed = "";
@@ -139,7 +210,7 @@ function renderPerformanceTable(data, yearIndexes, year) {
     const planned = r[plannedIndex] || "-";
     const realised = r[realisedIndex] || "-";
 
-    const statusClass = getPerformanceClass(planned, realised);
+    const statusClass = evaluatePerformance(r[2], planned, realised);
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
