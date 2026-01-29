@@ -40,7 +40,8 @@ const KPI_RULES = {
   "opex": "LOWER_BETTER",
   "co2": "LOWER_BETTER",
   "delay": "LOWER_BETTER",
-  "reduction" : " ",
+  "reduction" : "LOWER_BETTER",
+  "context" : "LOWER_BETTER",
 
   // Grade based
   "hrp": "GRADE",
